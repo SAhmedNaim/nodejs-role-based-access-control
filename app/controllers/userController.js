@@ -36,3 +36,30 @@ exports.getUser = async (req, res, next) => {
         next(error)
     }
 };
+
+exports.updateUser = async (req, res, next) => {
+    try {
+        const { role, email, password } = req.body;
+        const userId = req.params.userId;
+        await User.findByIdAndUpdate(userId, { role, email, password });
+        const user = await User.findById(userId);
+        res.status(200).json({
+            data: user
+        });
+    } catch (error) {
+        next(error)
+    }
+};
+
+exports.deleteUser = async (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        await User.findByIdAndDelete(userId);
+        res.status(200).json({
+            data: null,
+            message: 'User has been deleted'
+        });
+    } catch (error) {
+        next(error)
+    }
+};
