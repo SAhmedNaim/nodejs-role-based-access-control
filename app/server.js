@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const routes = require('./routes/route.js');
 require("dotenv").config({
     path: path.join(__dirname, "../.env")
 });
@@ -27,6 +28,8 @@ app.get("/", (req, res) => {
         message: "S Ahmed Naim"
     });
 });
+
+app.use('/api/', routes);
 
 app.listen(PORT, () => {
     console.log(`Server is listening on Port: ${PORT}`)
