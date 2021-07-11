@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-role-based-access-control",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SAhmedNaim/nodejs-role-based-access-control.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SAhmedNaim/nodejs-role-based-access-control/issues"
+  },
+  "homepage": "https://github.com/SAhmedNaim/nodejs-role-based-access-control#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
