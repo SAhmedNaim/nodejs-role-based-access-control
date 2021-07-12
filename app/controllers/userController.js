@@ -1,9 +1,19 @@
 const User = require('../models/userModel');
+const bcrypt = require('bcrypt');
+
+async function hashPassword(password) {
+    return await bcrypt.hash(password, 10);
+}
 
 exports.register = async (req, res, next) => {
     try {
         const { role, email, password } = req.body;
-        const newUser = new User({ email, password, role: role || "basic" });
+        const hashedPassword = await hashPassword(password);
+        const user = await User.find({email});
+
+        if (user.length > 0) throw new Error("Sorry! You have already registered");
+
+        const newUser = new User({ email, password: hashedPassword, role: role || "basic" });
 
         await newUser.save();
 
