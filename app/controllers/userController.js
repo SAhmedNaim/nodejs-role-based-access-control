@@ -10,6 +10,38 @@ async function hashPassword(password) {
     return await bcrypt.hash(password, 10);
 }
 
+exports.allowIfLoggedin = async (req, res, next) => {
+    try {
+        const accessToken = req.headers['x-access-token'];
+
+        if(accessToken) {
+            const {userId, exp} = await jwt.verify(accessToken, process.env.JWT_SECRET);
+
+            if (exp < Date.now().valueOf() / 1000) {
+                return res.status(401).json({
+                    error: 'JWT token has expired, please login to obtain a new one',
+                });
+            }
+
+            const user = res.locals.loggedInUser = await User.findById(userId);
+            if (!user) {
+                return res.status(401).json({
+                    error: "You need to be logged in to access this route"
+                });
+            }
+            req.user = user;
+        } else {
+            return res.status(401).json({
+                error: "Please provide the authentication token"
+            });
+        }
+
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
+
 exports.register = async (req, res, next) => {
     try {
         const { role, email, password } = req.body;
