@@ -51,7 +51,10 @@ exports.register = async (req, res, next) => {
         if (user) return next(new Error("Sorry! You are already registered"));
 
         const newUser = new User({ email, password: hashedPassword, role: role || "basic" });
-
+        const accessToken = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+            expiresIn: "1d"
+        });
+        newUser.accessToken = accessToken;
         await newUser.save();
 
         res.json({
